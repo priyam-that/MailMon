@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MailMon</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>MailMon</h1>
+            <button id="settingsBtn" aria-label="Settings">⚙️</button>
+        </header>
+
+        <section id="main-view">
+            <div class="input-group">
+                <label for="tone">Tone</label>
+                <select id="tone">
+                    <option value="formal">Formal</option>
+                    <option value="casual">Casual</option>
+                    <option value="professional">Professional</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="prompt">Prompt</label>
+                <textarea id="prompt" placeholder="What do you want to say?"></textarea>
+            </div>
+
+            <button id="generateBtn" class="primary-btn">Generate Email</button>
+            <div id="status" class="status-msg"></div>
+
+            <hr>
+
+            <button id="summarizeBtn" class="secondary-btn" style="border-color: #fbbc04; color: #b45f06;">📝 Summarize Current Email</button>
+            <div id="summaryResult" style="margin-top: 10px; font-size: 13px; line-height: 1.4; color: #444; white-space: pre-wrap;"></div>
+
+            <hr>
+
+            <button id="downloadHistoryBtn" class="secondary-btn">Download History</button>
+        </section>
+
+        <section id="settings-view" class="hidden">
+            <button id="backBtn" class="text-btn">← Back</button>
+            <div class="input-group">
+                <label for="apiKey">OpenRouter API Key</label>
+                <input type="password" id="apiKey" placeholder="sk-or-...">
+            </div>
+            <div class="input-group">
+                <label for="model">Model</label>
+                <select id="model">
+                    <option value="mistralai/mistral-7b-instruct:free">Mistral 7B (Free)</option>
+                    <option value="google/gemma-2-9b-it:free">Gemma 2 9B (Free)</option>
+                    <option value="deepseek/deepseek-chat">DeepSeek Chat</option>
+                </select>
+            </div>
+            <button id="saveSettingsBtn" class="primary-btn">Save Settings</button>
+            <div id="settingsStatus" class="status-msg"></div>
+        </section>
+    </div>
+    <script src="popup.js"></script>
+</body>
+</html>

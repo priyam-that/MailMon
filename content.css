@@ -1,0 +1,8 @@
+.mailmon-icon-container {
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.mailmon-icon-container:hover {
+    opacity: 1;
+}
