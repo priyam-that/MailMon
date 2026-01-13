@@ -2,7 +2,9 @@
 
 **Your AI-Powered Email Sidekick for Gmail**
 
-![MailMon Logo](assets/icon.png)
+<p align="center">
+  <img src="assets/icon.png" alt="MailMon Logo" width="160" />
+</p>
 
 MailMon is a Chrome Extension that supercharges your Gmail experience. It helps you draft emails in seconds using AI and keeps your inbox organized with smart summarization and history tracking.
 
