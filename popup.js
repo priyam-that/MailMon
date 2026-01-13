@@ -13,6 +13,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const status = document.getElementById('status');
     const toneSelect = document.getElementById('tone');
     const promptInput = document.getElementById('prompt');
+    const insertSummaryBtn = document.getElementById('insertSummaryBtn');
+
+    let lastRawSummary = '';
 
     // Add Close Button Logic
     // We can add a close button dynamically or assume user clicks header.
@@ -106,13 +109,11 @@ document.addEventListener('DOMContentLoaded', () => {
                             text: generatedText
                         }, (response) => {
                             if (chrome.runtime.lastError) {
-                                // If we are in iframe, chrome.tabs might fail or behave differently if not careful? 
-                                // Wait, popup.js running in iframe via chrome-extension:// URL acts as an extension page.
-                                // It HAS access to chrome.tabs.
                                 showStatus(status, 'Refresh Gmail tab.', 'error');
-                            } else {
-                                // Don't close window automatically in sidebar mode
+                            } else if (response && response.success) {
                                 showStatus(status, 'Inserted!', 'success');
+                            } else {
+                                showStatus(status, 'No compose window found. Open a Reply/Compose box.', 'error');
                             }
                         });
                     } else {
@@ -165,7 +166,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     summarizeBtn.textContent = 'Summarizing...';
                     try {
                         const summary = await callOpenRouterForSummary(result.apiKey, result.model, subject, body);
+                        lastRawSummary = summary; // Store for insertion
                         summaryResult.innerHTML = cleanSummaryOutput(summary);
+                        insertSummaryBtn.style.display = 'block';
                         showStatus(status, 'Done!', 'success');
                     } catch (error) {
                         console.error(error);
@@ -178,6 +181,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             });
         });
+    });
+
+    // Insert Summary to Prompt
+    insertSummaryBtn.addEventListener('click', () => {
+        if (lastRawSummary) {
+            promptInput.value = lastRawSummary;
+            promptInput.focus();
+            showStatus(status, 'Summary inserted into Prompt!', 'success');
+        }
     });
 
     downloadHistoryBtn.addEventListener('click', () => {

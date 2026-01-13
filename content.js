@@ -195,7 +195,22 @@ function getEmailContent() {
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === 'insertText') {
         const activeElement = document.activeElement;
-        const composeBody = document.querySelector('div[contenteditable="true"][role="textbox"]');
+
+        // Try multiple selectors for the compose body
+        // 1. The standard contenteditable role=textbox
+        // 2. Just contenteditable=true (catch-all)
+        // 3. Aria-label "Message Body" or similar
+        let composeBody = document.querySelector('div[contenteditable="true"][role="textbox"]');
+
+        if (!composeBody) {
+            composeBody = document.querySelector('div[contenteditable="true"][aria-label="Message Body"]');
+        }
+
+        // Also consider the "Reply" box at the bottom of a thread
+        if (!composeBody) {
+            composeBody = document.querySelector('div[g_editable="true"][contenteditable="true"]');
+        }
+
         const target = (activeElement && activeElement.getAttribute('contenteditable') === 'true') ? activeElement : composeBody;
 
         if (target) {
